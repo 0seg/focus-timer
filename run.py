@@ -3,6 +3,7 @@
 import os
 import sys
 import subprocess
+import time
 import venv
 from pathlib import Path
 
@@ -11,6 +12,7 @@ PROJECT_DIR = Path(__file__).resolve().parent
 VENV_DIR = PROJECT_DIR / ".venv"
 REQUIREMENTS_FILE = PROJECT_DIR / "requirements.txt"
 MAIN_FILE = PROJECT_DIR / "main.py"
+LAUNCHER_EXIT_DELAY = 5
 
 
 def venv_python():
@@ -46,15 +48,50 @@ def install_dependencies(python_executable):
     )
 
 
+def launch_application(python_executable):
+    """Start the GUI independently from the terminal that launched it."""
+    if os.name == "nt":
+        gui_python = python_executable.with_name("pythonw.exe")
+        if not gui_python.is_file():
+            gui_python = python_executable
+
+        creation_flags = (
+            subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.DETACHED_PROCESS
+            | subprocess.CREATE_NO_WINDOW
+        )
+        subprocess.Popen(
+            [str(gui_python), str(MAIN_FILE), *sys.argv[1:]],
+            cwd=PROJECT_DIR,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            close_fds=True,
+            creationflags=creation_flags,
+        )
+    else:
+        subprocess.Popen(
+            [str(python_executable), str(MAIN_FILE), *sys.argv[1:]],
+            cwd=PROJECT_DIR,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            close_fds=True,
+            start_new_session=True,
+        )
+
+    print(
+        f"Focus Timer is running independently. "
+        f"This launcher will close in {LAUNCHER_EXIT_DELAY} seconds."
+    )
+    time.sleep(LAUNCHER_EXIT_DELAY)
+
+
 def main():
     python_executable = ensure_venv()
     install_dependencies(python_executable)
 
-    print("Starting Focus Timer...")
-    os.execv(
-        str(python_executable),
-        [str(python_executable), str(MAIN_FILE), *sys.argv[1:]],
-    )
+    launch_application(python_executable)
 
 
 if __name__ == "__main__":

@@ -18,8 +18,10 @@ python run.py
 ```
 
 `run.py` crea `.venv` si no existe, comprueba/instala las dependencias de
-`requirements.txt` y ejecuta la aplicación usando ese entorno. No hace falta
-activar manualmente el entorno virtual.
+`requirements.txt` y ejecuta la aplicación usando ese entorno. La interfaz se
+inicia como un proceso independiente de la terminal; el lanzador espera cinco
+segundos y termina sin cerrar la aplicación. No hace falta activar manualmente
+el entorno virtual.
 
 ## Fish / Linux
 
