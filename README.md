@@ -9,6 +9,18 @@ Cronómetro de enfoque pequeño y modular.
 - Historial agrupado por fecha.
 - Registros en `registros.json`.
 
+## Ejecución automática
+
+Con Python instalado, ejecuta desde esta carpeta:
+
+```powershell
+python run.py
+```
+
+`run.py` crea `.venv` si no existe, comprueba/instala las dependencias de
+`requirements.txt` y ejecuta la aplicación usando ese entorno. No hace falta
+activar manualmente el entorno virtual.
+
 ## Fish / Linux
 
 ```fish
