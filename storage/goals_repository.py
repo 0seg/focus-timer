@@ -8,7 +8,7 @@ class GoalsRepository:
     """Stores recurring daily goals, independently from session history."""
 
     def __init__(self, path=None):
-        self.path = BASE_DIR / "objetivos.json" if path is None else Path(path)
+        self.path = BASE_DIR / "goals.json" if path is None else Path(path)
 
     def load(self):
         if not self.path.exists():

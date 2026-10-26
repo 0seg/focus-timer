@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class JsonRepository:
     def __init__(self, path=None):
-        self.path = BASE_DIR / "registros.json" if path is None else Path(path)
+        self.path = BASE_DIR / "records.json" if path is None else Path(path)
 
     def save(self, session: Session):
         records = self.load()
